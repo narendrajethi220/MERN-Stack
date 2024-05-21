@@ -10,9 +10,10 @@ const home = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    res.status(200).send("Welcome to the Registration Page !");
+    console.log(req.body);
+    res.status(200).json({ message: req.body });
   } catch {
-    res.status(404).send("Page Not Found !");
+    res.status(404).json("Page Not Found !");
   }
 };
 
