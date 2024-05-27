@@ -12,16 +12,17 @@ const home = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    // console.log(req.body);
     const { username, email, phone, password } = req.body;
 
     const userExist = await User.findOne({ email });
     if (userExist) {
       return res.status(400).json({ msg: "Email Already Exists" });
     }
-    await User.create({ username, email, phone, password });
-    res.status(200).json({ message: req.body });
-  } catch {
+
+    const userData = await User.create({ username, email, phone, password });
+    res.status(200).json({ msg: userData });
+  } catch (error) {
+    console.error(error);
     res.status(404).json("Page Not Found !");
   }
 };

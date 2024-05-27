@@ -7,6 +7,10 @@ const app = express();
 // middleware - parses incoming request bodies with JSON payloads.
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Hello From the backend ! ");
+});
+
 app.use("/api/auth", router);
 app.use("/api/auth/register", router);
 const PORT = 8080;

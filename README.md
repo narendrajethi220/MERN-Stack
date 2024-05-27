@@ -13,3 +13,5 @@
 #7 Creating the User Schema & Model for User Registration in our App.
 
 #8 Storing Registered User Data in an Online Database with Express and Mongoose.
+
+#9 Secure User Password using Bcryptjs
