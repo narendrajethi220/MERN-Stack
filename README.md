@@ -14,4 +14,6 @@
 
 #8 Storing Registered User Data in an Online Database with Express and Mongoose.
 
-#9 Secure User Password using Bcryptjs
+#9 Securing User Password using Bcryptjs
+
+#10 Securing User Authentication with JSON Web Token (JWT)
