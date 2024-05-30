@@ -19,3 +19,5 @@
 #10 Securing User Authentication with JSON Web Token (JWT)
 
 #11 User Login Route with Functionality
+
+#12 Building a Custom Compare Password Check
