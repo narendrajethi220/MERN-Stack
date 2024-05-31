@@ -20,4 +20,6 @@
 
 #11 User Login Route with Functionality
 
-#12 Building a Custom Compare Password Check
+#12 Building a Custom Compare Password Check Function
+
+#13 Registration Form Validation using ZOD
