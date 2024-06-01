@@ -1,60 +1,98 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user-model");
 
-const home = async (req, res) => {
+const home = async (req, res, next) => {
   try {
     res.status(200).send("Welcome to The Home Page !");
   } catch {
-    res.status(404).send({
-      msg: "Page Not Found !",
-    });
+    const status = 404;
+    const message = "Page Not Found !";
+    const error = {
+      status,
+      message,
+    };
+    next(error);
   }
 };
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const { username, email, phone, password } = req.body;
 
     const userExist = await User.findOne({ email });
     if (userExist) {
-      return res.status(400).json({ msg: "Email Already Exists" });
+      const status = 400;
+      const message = "Email Already Exists";
+      const error = {
+        status,
+        message,
+      };
+      next(error);
+      return; // Add return to prevent further execution
     }
 
-    const userData = await User.create({ username, email, phone, password });
+    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password before saving
+    const userData = await User.create({
+      username,
+      email,
+      phone,
+      password: hashedPassword,
+    });
     res.status(200).json({
       msg: "User Successfully Registered",
       token: await userData.generateToken(),
       userId: userData._id.toString(),
     });
-  } catch (error) {
+  } catch (err) {
+    const status = 500; // Use 500 for server errors
+    const message = "Internal Server Error";
+    const error = {
+      status,
+      message,
+    };
+    next(error);
     console.error(error);
-    res.status(404).json("Page Not Found !");
   }
 };
-// In most cases, converting _id to a string is a good practice bcoz it ensures consistency and compatibility across different JWT libraries and systems. It also aligns with the expectations that claims in a JWT are represented as strings.
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const userExist = await User.findOne({ email });
     if (!userExist) {
-      return res.status(400).json({ msg: "Invalid Credentials" });
+      const status = 400;
+      const message = "Invalid Credentials";
+      const error = {
+        status,
+        message,
+      };
+      next(error);
+      return; // Add return to prevent further execution
     }
-    // const isPasswordValid = await bcrypt.compare(password, userExist.password);
-    const isPasswordValid = await userExist.comparePassword(password);
+    const isPasswordValid = await bcrypt.compare(password, userExist.password);
     if (isPasswordValid) {
       res.status(200).json({
-        msg: "User Login Successfull",
+        msg: "User Login Successful",
         token: await userExist.generateToken(),
         userId: userExist._id.toString(),
       });
     } else {
-      res.status(401).json({
-        msg: "Invalid Email or Password",
-      });
+      const status = 401;
+      const message = "Invalid Email or Password";
+      const error = {
+        status,
+        message,
+      };
+      next(error);
     }
-  } catch (error) {
-    res.status(500).json("internal server error");
+  } catch (err) {
+    const status = 500;
+    const message = "Internal Server Error";
+    const error = {
+      status,
+      message,
+    };
+    next(error);
   }
 };
 

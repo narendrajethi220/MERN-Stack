@@ -23,3 +23,5 @@
 #12 Building a Custom Compare Password Check Function
 
 #13 Registration Form Validation using ZOD
+
+#14 Express.js Error Handling: Error Middleware Implementation
